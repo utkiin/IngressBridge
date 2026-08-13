@@ -1,32 +1,27 @@
+import { useId } from 'react'
+
 interface AdSlotProps {
   variant?: 'leaderboard' | 'rectangle' | 'banner'
   className?: string
 }
 
-/**
- * A-ADS (a-ads.com) unit id — sign up, create an ad unit, and paste its id here.
- * Left blank on purpose: until it's set, every slot renders the neutral
- * "Advertisement" placeholder below instead of a broken iframe.
- */
-const AADS_UNIT_ID = ''
+/** A-ADS (a-ads.com) adaptive ad unit — https://aads.com/ru/ad-units/ */
+const AADS_UNIT_ID = '2452053'
+const AADS_HOST = 'acceptable.a-ads.com'
 
-const placeholderSizes: Record<NonNullable<AdSlotProps['variant']>, string> = {
-  leaderboard: 'h-[90px] max-w-[728px]',
-  rectangle: 'h-[250px] max-w-[300px]',
-  banner: 'h-[60px] max-w-full',
-}
-
-const aadsDimensions: Record<NonNullable<AdSlotProps['variant']>, { width: number; height: number }> = {
-  leaderboard: { width: 728, height: 90 },
-  rectangle: { width: 300, height: 250 },
-  banner: { width: 468, height: 60 },
+const containerSizes: Record<NonNullable<AdSlotProps['variant']>, string> = {
+  leaderboard: 'max-w-[728px]',
+  rectangle: 'max-w-[300px]',
+  banner: 'max-w-full',
 }
 
 export function AdSlot({ variant = 'banner', className = '' }: AdSlotProps) {
+  const frameId = useId()
+
   if (!AADS_UNIT_ID) {
     return (
       <div
-        className={`mx-auto flex w-full items-center justify-center rounded-xl border border-dashed border-slate-300/70 bg-slate-50/60 text-[11px] uppercase tracking-wider text-slate-400 dark:border-slate-700/70 dark:bg-slate-900/40 dark:text-slate-600 ${placeholderSizes[variant]} ${className}`}
+        className={`mx-auto flex h-[90px] w-full items-center justify-center rounded-xl border border-dashed border-slate-300/70 bg-slate-50/60 text-[11px] uppercase tracking-wider text-slate-400 dark:border-slate-700/70 dark:bg-slate-900/40 dark:text-slate-600 ${containerSizes[variant]} ${className}`}
         aria-hidden="true"
       >
         Advertisement
@@ -34,18 +29,19 @@ export function AdSlot({ variant = 'banner', className = '' }: AdSlotProps) {
     )
   }
 
-  const { width, height } = aadsDimensions[variant]
-
   return (
-    <div className={`mx-auto flex w-full flex-col items-center gap-1 ${className}`}>
-      <span className="text-[10px] uppercase tracking-wider text-slate-400 dark:text-slate-600">Advertisement</span>
-      <iframe
-        title="Advertisement"
-        data-aa={AADS_UNIT_ID}
-        src={`https://ad.a-ads.com/${AADS_UNIT_ID}?size=${width}x${height}`}
-        style={{ width, height, maxWidth: '100%', border: 0, padding: 0, overflow: 'hidden' }}
-        scrolling="no"
-      />
+    <div className={`mx-auto w-full ${containerSizes[variant]} ${className}`}>
+      <span className="mb-1 block text-center text-[10px] uppercase tracking-wider text-slate-400 dark:text-slate-600">
+        Advertisement
+      </span>
+      <div id={frameId} style={{ width: '100%', margin: 'auto', position: 'relative', zIndex: 1 }}>
+        <iframe
+          title="Advertisement"
+          data-aa={AADS_UNIT_ID}
+          src={`https://${AADS_HOST}/${AADS_UNIT_ID}/?size=Adaptive`}
+          style={{ border: 0, padding: 0, width: '100%', height: 'auto', overflow: 'hidden', display: 'block', margin: 'auto' }}
+        />
+      </div>
     </div>
   )
 }
