@@ -118,7 +118,7 @@ function App() {
           </div>
 
           <div className="mx-auto max-w-4xl px-4 pb-4 sm:px-6">
-            <AdSlot variant="leaderboard" />
+            <AdSlot variant="leaderboard" live />
           </div>
         </section>
 
