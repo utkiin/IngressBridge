@@ -4,7 +4,6 @@ import { InputPanel } from './components/InputPanel'
 import { OutputPanel } from './components/OutputPanel'
 import { OptionsPanel, type Options } from './components/OptionsPanel'
 import { WarningsPanel } from './components/WarningsPanel'
-import { AdSlot } from './components/AdSlot'
 import { useTheme } from './hooks/useTheme'
 import { convertIngressToGateway } from './lib/ingressToGateway'
 import { examples } from './lib/examples'
@@ -116,10 +115,6 @@ function App() {
               </a>
             </div>
           </div>
-
-          <div className="mx-auto max-w-4xl px-4 pb-4 sm:px-6">
-            <AdSlot variant="leaderboard" live />
-          </div>
         </section>
 
         <section id="converter" className="mx-auto max-w-6xl scroll-mt-20 px-4 py-10 sm:px-6">
@@ -158,10 +153,6 @@ function App() {
               </div>
             ))}
           </div>
-        </section>
-
-        <section className="mx-auto max-w-4xl px-4 pb-6 sm:px-6">
-          <AdSlot variant="rectangle" />
         </section>
       </main>
 
